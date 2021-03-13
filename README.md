@@ -16,7 +16,3 @@ Developer of parallel code in GPGPU: Tomas Carlotto          | Code written in C
 Water flow simulation in the Peri Lake Watershed:
 
 ![](Peri_Lake_watershed.gif) 
-
-Dam break simulation:
-
-![](dam_break.gif)
