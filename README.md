@@ -5,6 +5,10 @@ Authors: Tomas Carlotto, Pedro Luiz Borges Chaffe, Camyla Innocente dos Santos, 
 
 Developer of parallel code in GPGPU: Tomas Carlotto          | Code written in CUDA C/C++
 
+This code or any part of it may be used as long as the authors are cited.
+Under no circumstances will authors or copyright holders be liable for any claims,
+damages or other liability arising from the use any part of related code.
+
 
     Prerequisites for using parallel code:
     Computer equipped with NVIDIA GPU (compatible with CUDA technology).
