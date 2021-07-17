@@ -33,8 +33,8 @@ __global__ void init_inf(int rows, int cols, double *d_ho, double *d_h, int *d_i
 	int id_inf = blockDim.x*blockIdx.x + threadIdx.x;
 
 	while (id_inf < N){
-		int inj = id_inf % cols;
-		int ini = id_inf / cols;
+		//int inj = id_inf % cols;
+		//int ini = id_inf / cols;
 
 		d_ho[id_inf] = d_h[id_inf];
 
@@ -54,7 +54,7 @@ __global__ void init_inf(int rows, int cols, double *d_ho, double *d_h, int *d_i
 __global__ void initiald(int rows, int cols, double *d_h, int *d_infx, int *d_infy, int *d_inf, double *d_hm, double *d_hn, double *d_baseo, int N, double NaN){
 
 	int id_init = blockDim.x*blockIdx.x + threadIdx.x;
-	double hmn;
+	//double hmn;
 
 	while (id_init < N){
 		int inj = id_init % cols;
@@ -62,32 +62,32 @@ __global__ void initiald(int rows, int cols, double *d_h, int *d_infx, int *d_in
 
 		// ***************************************************************************
 		if (ini == 0){
-			hmn = d_h[id_init];
+			d_hm[id_init] = d_h[id_init];
 			d_infx[id_init] = 1;
 		}
 		else if (ini == rows){
-			hmn = d_h[id_init - cols];
+			d_hm[id_init] = d_h[id_init - cols];
 			d_infx[id_init] = 1;
 		}
 		else{
-			hmn = 0.50*(d_h[id_init] + d_h[id_init - cols]);
+			d_hm[id_init] = 0.50*(d_h[id_init] + d_h[id_init - cols]);
 			d_infx[id_init] = abs(d_inf[id_init] - d_inf[id_init - cols]);
 		}
-		d_hm[id_init] = hmn;
+		//d_hm[id_init] = hmn;
 		// ****************************************************************************
 		if (inj == 0){
-			hmn = d_h[id_init];
+			d_hn[id_init] = d_h[id_init];
 			d_infy[id_init] = 1;
 		}
 		else if (inj == cols){
-			hmn = d_h[id_init - 1];
+			d_hn[id_init] = d_h[id_init - 1];
 			d_infy[id_init] = 1;
 		}
 		else{
-			hmn = 0.50*(d_h[id_init] + d_h[id_init - 1]);
+			d_hn[id_init] = 0.50*(d_h[id_init] + d_h[id_init - 1]);
 			d_infy[id_init] = abs(d_inf[id_init] - d_inf[id_init - 1]);
 		}
-		d_hn[id_init] = hmn;
+		//d_hn[id_init] = hmn;
 		// ***************************************************************************
 		id_init += gridDim.x * blockDim.x;
 	}
@@ -153,7 +153,7 @@ __global__ void flux(double *d_th, double gg, double rn, int* d_inf, double* d_h
 								if ((d_h[f_id]>0) || (d_h[f_id - cols]>0)){
 									hhan = hhep - hhwp;
 									sgnm = hhan / abs(hhan);
-									hh3 = max((d_h[f_id] + d_baseo[f_id]), (d_h[f_id - cols] + d_baseo[f_id - cols])) - max(d_baseo[f_id], d_baseo[f_id - cols]);
+									hh3 = fmax((d_h[f_id] + d_baseo[f_id]), (d_h[f_id - cols] + d_baseo[f_id - cols])) - fmax(d_baseo[f_id], d_baseo[f_id - cols]);
 									d_um[f_id] = -sgnm*0.350*hh3*sqrt(2.00*gg*hh3);
 								}
 								else{
@@ -224,9 +224,10 @@ __global__ void flux(double *d_th, double gg, double rn, int* d_inf, double* d_h
 			}
 		}
 		else{
-			d_um[f_id] = 0;
-		}
 
+			d_um[f_id] = 0;
+
+		}
 
 		//      ----------------------
 		//      Y - DIRECTION
@@ -270,7 +271,7 @@ __global__ void flux(double *d_th, double gg, double rn, int* d_inf, double* d_h
 								if ((d_h[f_id]>0) || (d_h[f_id - 1]>0)){
 									hhan = hhnp - hhsp;
 									sgnm = hhan / abs(hhan);
-									hh3 = max((d_h[f_id] + d_baseo[f_id]), (d_h[f_id - 1] + d_baseo[f_id - 1])) - max(d_baseo[f_id], d_baseo[f_id - 1]);
+									hh3 = fmax((d_h[f_id] + d_baseo[f_id]), (d_h[f_id - 1] + d_baseo[f_id - 1])) - fmax(d_baseo[f_id], d_baseo[f_id - 1]);
 									d_vn[f_id] = -sgnm*0.350*hh3*sqrt(2.00*gg*hh3);
 								}
 								else{
@@ -292,7 +293,7 @@ __global__ void flux(double *d_th, double gg, double rn, int* d_inf, double* d_h
 								if (ini == 0){
 									v11 = 0;
 								}
-								else if (ini == rows){
+								else if (ini == rows){                                                                                                             //<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< rows
 									v11 = 0;
 								}
 								else{
@@ -465,8 +466,8 @@ __global__ void uu_vv(double *d_th, double* d_h, double* d_uu1, double* d_vv1, d
 	int uuvv_id = blockDim.x*blockIdx.x + threadIdx.x;
 
 	while (uuvv_id < N){
-		int inj = uuvv_id % cols;
-		int ini = uuvv_id / cols;
+		//int inj = uuvv_id % cols;
+		//int ini = uuvv_id / cols;
 
 		//   ------------------------------
 		//   uu, vv calculation
@@ -502,24 +503,30 @@ __global__ void uua_vva(double* d_uu1, double* d_vv1, double*d_uua, double*d_vva
 		//   ------------------------------
 		//   uua, vva calculation
 		//   ------------------------------
+
+		//if ((inj>0) && (inj<cols) && (ini>0) && (ini < rows-1)){
 		if (inj>0){
-			d_uua[ua_va_id] = 0.250*(d_uu1[ua_va_id] + d_uu1[ua_va_id + cols] + d_uu1[ua_va_id - 1] + d_uu1[ua_va_id + cols - 1]);
+		d_uua[ua_va_id] = 0.250*(d_uu1[ua_va_id] + d_uu1[ua_va_id + cols] + d_uu1[ua_va_id - 1] + d_uu1[ua_va_id + cols - 1]);
 		}
+		
+		//if ((ini>0) && (ini < rows-1) && (inj>0) && (inj<cols)){
 		if (ini>0){
 			d_vva[ua_va_id] = 0.250*(d_vv1[ua_va_id] + d_vv1[ua_va_id + 1] + d_vv1[ua_va_id - cols] + d_vv1[ua_va_id - cols + 1]);
-		}
+		}		
+
 		if (inj == 0){
 			d_uua[ua_va_id] = 0.50*(d_uu1[ua_va_id] + d_uu1[ua_va_id + cols]);
 		}
-		if (inj == cols){
+		if (inj == (cols)){
 			d_uua[ua_va_id] = 0.50*(d_uu1[ua_va_id] + d_uu1[ua_va_id + cols]);
 		}
 		if (ini == 0){
 			d_vva[ua_va_id] = 0.50*(d_vv1[ua_va_id] + d_vv1[ua_va_id + 1]);
 		}
-		if (ini == rows){
+		if (ini == (rows)){
 			d_vva[ua_va_id] = 0.50*(d_vv1[ua_va_id] + d_vv1[ua_va_id + 1]);
 		}
+		
 		ua_va_id += gridDim.x * blockDim.x;
 	}
 
@@ -545,7 +552,8 @@ __host__ void stream_flow(int cols, int rows, double xcoor, double ycoor, double
 		qinx = round(abs(xcoor - h_brx[i]));
 		qiny = rows - round(abs(ycoor - h_bry[i]));
 
-		h_ql[(qiny + 1)*cols - (cols - (qinx + 1))] = ql;
+		h_ql[(qiny)*cols - (cols - (qinx))] = ql;
+
 	}
 	if (time <= 1.00){
 		h_rr[0] = h_rain[0] * time;
@@ -590,7 +598,6 @@ __global__ void gpu_evaporation_calc(double albedo, double* d_T, double*d_Rg, do
 }
 
 __host__ void evaporation_load(double time, double dtrain, double* h_Evapo, double* h_Ev){
-
 	int it;
 	if (time <= 1.00){
 		h_Ev[0] = h_Evapo[0] * time;
@@ -600,12 +607,11 @@ __host__ void evaporation_load(double time, double dtrain, double* h_Evapo, doub
 		h_Ev[0] = h_Evapo[it] + (h_Evapo[it + 1] - h_Evapo[it]) / (dtrain * (time - dtrain * (it))); // [mm]
 	}
 	h_Ev[0] = h_Ev[0] / (dtrain*1000.0); //  mm->m / s
-
 }
 
-__global__ void continuity(double dt2, int cols, double dx, double dy, double *d_rr, double *d_Ev, double *d_ql, double *d_h, double *d_ho, double *d_um, double *d_vn, double INT, double INF, double LWL, double EV_WL_min, int *d_inf, int N){
+__global__ void continuity(double dt2, int cols, int rows, double dx, double dy, double *d_rr, double *d_Ev, double *d_ql, double *d_h, double *d_ho, double *d_um, double *d_vn, double INT, double INF, double LWL, double EV_WL_min, int *d_inf, int N){
 
-	// Posição do vertedouro Peri Lake
+	// Peri Lake vertedouro
 	//int qiny = 397;
 	//int qinx = 142;
 
@@ -621,26 +627,27 @@ __global__ void continuity(double dt2, int cols, double dx, double dy, double *d
 	double percent_P2flow, evapo;
 	int ct_id = blockDim.x*blockIdx.x + threadIdx.x;
 	while (ct_id < N){
-		int ini = ct_id % cols;
-		int inj = ct_id / cols;
+		//int inj = ct_id % cols;  
+		//int ini = ct_id / cols;  
 
 
 		//************ percentage of precipitation that becomes runoff **************
 
 		if (d_ho[ct_id] > EV_WL_min){
-			percent_P2flow = 1 - LWL;
+			percent_P2flow = 1.00 - LWL;
 			evapo = d_Ev[0];
 		}
 		else{
-			percent_P2flow = 1 - (INT + INF);
+			percent_P2flow = 1.00 - (INT + INF);
 			evapo = 0.000;
 		}
 
+		//if ((ini < rows-1) && (inj<cols)){
+			d_h[ct_id] = d_ho[ct_id] - dt2*((d_um[ct_id + cols] - d_um[ct_id]) / dx + (d_vn[ct_id + 1] - d_vn[ct_id]) / dy - d_ql[ct_id] - d_rr[0] * percent_P2flow + evapo);
+		//}
 
-		d_h[ct_id] = d_ho[ct_id] - dt2*((d_um[ct_id + cols] - d_um[ct_id]) / dx + (d_vn[ct_id + 1] - d_vn[ct_id]) / dy - d_ql[ct_id] - d_rr[0] * percent_P2flow + evapo);
 
-
-		d_h[ct_id] = max(d_h[ct_id], 0.00);
+		d_h[ct_id] = fmax(d_h[ct_id], 0.00);
 		if (d_inf[ct_id] == 0){
 			d_h[ct_id] = 0.00;
 		}
@@ -669,7 +676,7 @@ __global__ void forward(int cols, int rows, double *d_umo, double *d_um, double 
 		if (ini == rows){
 			d_umo[fw_id] = d_um[fw_id];
 		}
-		if (inj = cols){
+		if (inj == cols){
 			d_vno[fw_id] = d_vn[fw_id];
 		}
 
@@ -715,11 +722,11 @@ int main()
 {
 
 	// Definition of integer type variables - scalar
-	int dir_number, out_velocity_x, out_velocity_y, out_elevation, out_depht, out_outlet_on, dir_it, N, cols, rows, i, j, k, lpout, lkout, nst, n_out, outx, outy;
+	int dir_number, out_velocity_x, out_velocity_y, out_elevation, out_depth, out_outlet_on, dir_it, N, cols, rows, i, lpout, lkout, nst, n_out, outx, outy;
 
 	// Definition of variables of type double - scalar
 	double resolution, tday0, thour0, tmin0, tsec0, tday, thour, tmin, tsec, dkout, dpout, time0, \
-		timmax, dt, dtoq, brx, bry, dt2, gg, manning_coef, pi, dtrain, NaN, hmn, rr;// north, south, east, west;
+		timmax, dt, dtoq, dt2, gg, manning_coef, dtrain, NaN;// , hmn, rr;// north, south, east, west;
 
 	// Definition of string variables
 	std::string dir_parameters, dirfile_setup, dir_DEM, dir_overQ, dir_rain, initi_cond, outlet_file, dir_temperature, dir_solar_radiation;
@@ -730,10 +737,10 @@ int main()
 	// Definition of processing variables in CPU - vector / array
 	double *h_baseo, *h_h, *h_um, *h_hm, *h_uu1, *h_umo, \
 		*h_vv1, *h_vva, *h_vn, *h_hn, *h_vno, *h_uua, **h_qq, \
-		*h_rain, *h_ho, *h_uu, *h_vv, *h_dx, *h_dy, *h_ql, *h_rr, *h_th, *h_initial_condition;
+		*h_rain, *h_ho, *h_uu, *h_vv, *h_ql, *h_rr, *h_th, *h_initial_condition;
 
 	double *h_brx, *h_bry, *h_outx, *h_outy, xcoor, ycoor;
-	int *h_inf, *h_infx, *h_infy, *h_infsw, *h_outlet;
+	int *h_infx, *h_infy;
 
 	// Evaporation variables definition
 	double albedo, INT, INF, LWL, EV_WL_min, *h_T, *h_Rg, *h_Evapo, *h_Ev;
@@ -741,7 +748,7 @@ int main()
 
 	// Definition of processing variables in GPU - vector / array
 	double *d_baseo, *d_h, *d_um, *d_hm, *d_uu1, *d_umo, \
-		*d_vv1, *d_vva, *d_vn, *d_hn, *d_vno, *d_uua, *d_ho, *d_uu, *d_vv, *d_dx, *d_dy, *d_ql, *d_rr, *d_th;
+		*d_vv1, *d_vva, *d_vn, *d_hn, *d_vno, *d_uua, *d_ho, *d_uu, *d_vv, *d_ql, *d_rr, *d_th;
 	int *d_inf, *d_infx, *d_infy;// , *d_outlet;
 
 	// Evaporation variables definition
@@ -753,7 +760,7 @@ int main()
 	int threadsPerBlock;               //Number of threads
 	int maxThreadsPerBlock;
 
-	char dirfile[4000], fdem[50], fqq[50], frain[50], fdesignrain[50];
+	char dirfile[4000];
 	//*************************************************
 	FILE *dir = fopen("db\\dir.txt", "r");
 	fscanf(dir, " dir_number: %d\n", &dir_number);
@@ -786,10 +793,9 @@ int main()
 		fscanf(file_setup, " out_velocity_x: %d\n ", &out_velocity_x);
 		fscanf(file_setup, " out_velocity_y: %d\n ", &out_velocity_y);
 		fscanf(file_setup, " out_elevation: %d\n ", &out_elevation);
-		fscanf(file_setup, " out_depht: %d\n ", &out_depht);
+		fscanf(file_setup, " out_depth: %d\n ", &out_depth);
 		fscanf(file_setup, " out_outlet_on: %d\n ", &out_outlet_on);
 		fclose(file_setup);
-
 
 		// ******************************************************************
 		dt2 = 2.00*dt;
@@ -812,7 +818,9 @@ int main()
 		fscanf(V_DEM, " yllcorner %lf\n", &ycoor);
 		fscanf(V_DEM, " cellsize %lf\n", &resolution);
 		fscanf(V_DEM, " NODATA_value %lf\n", &NaN);
-		N = (rows)*(cols);
+
+		N = (rows)*(cols)+cols/2;
+
 		h_baseo = (double*)malloc(N*sizeof(double));
 		for (i = 0; i < N; i++){
 			fscanf(V_DEM, "%lf\n", &h_baseo[i]);
@@ -839,8 +847,7 @@ int main()
 			h_bry[inst] = h_bry[inst] / resolution;
 		}
 		fclose(file_coord_source);
-
-
+		
 		// ******************************************************************
 		//                            Input outlet
 		// ******************************************************************	
@@ -873,7 +880,6 @@ int main()
 			system("pause");
 			return 0;
 		}
-
 		//Count the number of elements in the Q_source_sink.dat file
 		while (!feof(V_dir_overQ))
 		{
@@ -937,9 +943,9 @@ int main()
 		fscanf(V1_dir_rain, " %lf\n", &dtrain);
 		fscanf(V1_dir_rain, " %s %s %s %s\n", head1_rain, head2_rain, head3_rain, head4_rain);// , head5_rain, head6_rain, head7_rain);
 		h_rain = (double*)malloc((cont_rain - 1)*sizeof(double));
-		std::string rhour;
+		std::string rtime;
 		for (i = 0; i < (cont_rain - 1); i++){
-			fscanf(V1_dir_rain, " %s %lf\n", &rhour, &h_rain[i]);
+			fscanf(V1_dir_rain, " %s %lf\n", &rtime, &h_rain[i]);
 		}
 		fclose(V1_dir_rain);
 
@@ -1072,31 +1078,25 @@ int main()
 		// ***************************************************************
 		// ***************************************************************
 
-		printf(" ******************************************************************** %\n");
-		printf("               2D Inundation model (Shallow water equation)   %\n");
-		printf(" ******************************************************************** %\n");
-		printf(" Month/Year - 10/2015  %\n");
-		printf(" Sequential code developer(Original version):  %\n");
-		printf("     Seungsoo Lee   | Code written in FORTRAN 90 % \n");
-		printf("   %\n");
-		printf(" ******************************************************************** %\n");
-		printf(" Two-dimensional shallow water model accelerated by GPGPU (SW2D-GPU)  %\n");
-		printf(" ******************************************************************** %\n");
-		printf(" Month/Year - 11/2020  %\n");
-		printf(" Developer of parallel code in GPGPU: %\n");
-		printf("     Tomas Carlotto         |   Code written in CUDA C/C++ %\n");
-		printf(" ******************************************************************** %\n");
-		printf(" ******************************************************************** %\n");
+		printf(" %s\n", " ******************************************************************** ");
+		printf(" %s\n", " Two-dimensional shallow water model accelerated by GPGPU (SW2D-GPU)  ");
+		printf(" %s\n", " ******************************************************************** ");
+		printf(" %s\n", " Month/Year - 11/2020  ");
+		printf(" %s\n", " Developer of parallel code in GPGPU: ");
+		printf(" %s\n", "     Tomas Carlotto         |   Code written in CUDA C/C++ ");
+		printf(" %s\n", " ******************************************************************** ");
+		printf(" %s\n", " ******************************************************************** ");
 		printf(" %s\n", dirfile);
+
 
 		// *************************************************************
 		//              Memory Allocation - CPU
 		// *************************************************************
 
-		h_inf = (int*)malloc(N*sizeof(int));
+		//h_inf = (int*)malloc(N*sizeof(int));
 		h_infx = (int*)malloc(N*sizeof(int));
 		h_infy = (int*)malloc(N*sizeof(int));
-		h_infsw = (int*)malloc(N*sizeof(int));
+		//h_infsw = (int*)malloc(N*sizeof(int));
 
 		h_h = (double*)malloc(N*sizeof(double));
 		h_ho = (double*)malloc(N*sizeof(double));
@@ -1122,11 +1122,28 @@ int main()
 		h_th[0] = 1.0e-4;
 
 		int km = -1;
-		for (int im = 0; im <= rows - 1; im++) {
-			for (int jm = 0; jm <= cols - 1; jm++) {
+		for (int im = 0; im < rows; im++) {
+			for (int jm = 0; jm < cols; jm++) {
 				km = km + 1;
 
+				h_um[km] = 0.00;
+				h_umo[km] = 0.00;
+				h_uu[km] = 0.00;
+				h_uua[km] = 0.00;
+				h_uu1[km] = 0.00;
+
+				h_vn[km] = 0.00;
+				h_vno[km] = 0.00;
+				h_vv[km] = 0.00;
+				h_vva[km] = 0.00;
+				h_vv1[km] = 0.00;
+
+				h_ql[km] = 0.000;
+
 				h_h[km] = h_initial_condition[km];
+				h_ho[km] = 0.00;
+				h_hm[km] = 0.00;
+				h_hn[km] = 0.00;
 
 			}
 		}
@@ -1159,16 +1176,43 @@ int main()
 		cudaMalloc((void**)&d_ql, N*sizeof(double));
 		cudaMalloc((void**)&d_rr, sizeof(double));
 		cudaMalloc((void**)&d_th, sizeof(double));
+
+		cudaMemcpy(d_um, h_um, N*sizeof(double), cudaMemcpyHostToDevice);
+		cudaMemcpy(d_umo, h_umo, N*sizeof(double), cudaMemcpyHostToDevice);
+		cudaMemcpy(d_uu, h_uu, N*sizeof(double), cudaMemcpyHostToDevice);
+		cudaMemcpy(d_uua, h_uua, N*sizeof(double), cudaMemcpyHostToDevice);
+		cudaMemcpy(d_uu1, h_uu1, N*sizeof(double), cudaMemcpyHostToDevice);
+
+		cudaMemcpy(d_vn, h_vn, N*sizeof(double), cudaMemcpyHostToDevice);
+		cudaMemcpy(d_vno, h_vno, N*sizeof(double), cudaMemcpyHostToDevice);
+		cudaMemcpy(d_vv, h_vv, N*sizeof(double), cudaMemcpyHostToDevice);
+		cudaMemcpy(d_vva, h_vva, N*sizeof(double), cudaMemcpyHostToDevice);
+		cudaMemcpy(d_vv1, h_vv1, N*sizeof(double), cudaMemcpyHostToDevice);
+
 		cudaMemcpy(d_th, h_th, sizeof(double), cudaMemcpyHostToDevice);
 		cudaMemcpy(d_h, h_h, N*sizeof(double), cudaMemcpyHostToDevice);
+		cudaMemcpy(d_ho, h_ho, N*sizeof(double), cudaMemcpyHostToDevice);
+		cudaMemcpy(d_hn, h_hn, N*sizeof(double), cudaMemcpyHostToDevice);
 		cudaMemcpy(d_hm, h_hm, N*sizeof(double), cudaMemcpyHostToDevice);
-		cudaMemcpy(d_infx, h_infx, N*sizeof(double), cudaMemcpyHostToDevice);
-		cudaMemcpy(d_infy, h_infy, N*sizeof(double), cudaMemcpyHostToDevice);
+		cudaMemcpy(d_infx, h_infx, N*sizeof(int), cudaMemcpyHostToDevice);
+		cudaMemcpy(d_infy, h_infy, N*sizeof(int), cudaMemcpyHostToDevice);
 		cudaMemcpy(d_baseo, h_baseo, N*sizeof(double), cudaMemcpyHostToDevice);
+
 
 		// *******************************************************************
 		// Definition of the number of blocks and threads for mesh (N cells)
 		// *******************************************************************
+		/*
+		int iz;
+		int jz;
+		for (int sw = 0; sw < N;sw++){
+			jz = sw % (cols);
+			iz = sw / (cols);
+			
+		}
+		printf("%d    %d   %d   %d\n", rows, cols, iz, jz);
+		system("pause");
+		*/
 
 		cudaDeviceProp prop;
 		int count;	cudaGetDeviceCount(&count);
@@ -1184,17 +1228,19 @@ int main()
 			threadsPerBlock = maxThreadsPerBlock;
 			numBlocks = (N + maxThreadsPerBlock - 1) / maxThreadsPerBlock;
 		}
+
 		double dx = resolution;
 		double dy = resolution;
 		init_inf << < numBlocks, threadsPerBlock >> >(rows, cols, d_ho, d_h, d_inf, d_baseo, N, NaN);
 		cudaDeviceSynchronize();
+
 		initiald << < numBlocks, threadsPerBlock >> >(rows, cols, d_h, d_infx, d_infy, d_inf, d_hm, d_hn, d_baseo, N, NaN);
 		cudaDeviceSynchronize();
 		if (evaporation_on == 1){
 			gpu_evaporation_calc << <numBlocks, threadsPerBlock >> >(albedo, d_T, d_Rg, d_Rs, d_pw, d_lv, d_Evapo, dtrain, (cont_rain - 1));
 			cudaMemcpy(h_Evapo, d_Evapo, (cont_rain - 1)*sizeof(double), cudaMemcpyDeviceToHost);
 		}
-
+		
 		double time = time0;
 		int mstep = 0;
 
@@ -1215,45 +1261,56 @@ int main()
 			// ************************************************
 			//           2D SHALLOW WATER CALCULATION
 			// ************************************************
-
-			flux << < numBlocks, threadsPerBlock >> >(d_th, gg, manning_coef, d_inf, d_h, d_infx, d_infy, d_baseo, d_um, d_hm, d_uu1, \
-				d_umo, d_vv1, d_vva, d_vn, d_hn, d_vno, d_uua, d_ho, N, \
-				cols, rows, dx, dy, dt2);
-
+			
+			flux <<< numBlocks, threadsPerBlock >>>(d_th, gg, manning_coef, d_inf, d_h, d_infx, d_infy, d_baseo, d_um, d_hm, d_uu1, \
+				d_umo, d_vv1, d_vva, d_vn, d_hn, d_vno, d_uua, d_ho, N, cols, rows, dx, dy, dt2);			
 			cudaDeviceSynchronize();
+
+		    /*
+	        cudaError_t cudaStatus = cudaGetLastError();
+			if (cudaStatus != cudaSuccess)
+			{
+				fprintf(stderr, "addKernel launch failed 1: %s\n", cudaGetErrorString(cudaStatus));
+			}
+			system("pause");
+			*/
 
 			// ************************************************
 			//              CONTINUITY EQUATION
 			// ************************************************
 
-			stream_flow(cols, rows, xcoor, ycoor, time, dtrain, h_rain, h_qq, h_ql, dtoq, h_brx, h_bry, dx, dy, nst, h_rr);
+			stream_flow(cols, rows, (xcoor/resolution), (ycoor/resolution), time, dtrain, h_rain, h_qq, h_ql, dtoq, h_brx, h_bry, dx, dy, nst, h_rr);
 			cudaMemcpy(d_ql, h_ql, N*sizeof(double), cudaMemcpyHostToDevice);
 			cudaMemcpy(d_rr, h_rr, sizeof(double), cudaMemcpyHostToDevice);
+			
 
 			if (evaporation_on == 1){
 				evaporation_load(time, dtrain, h_Evapo, h_Ev);
 				cudaMemcpy(d_Ev, h_Ev, sizeof(double), cudaMemcpyHostToDevice);
 			}
+			
 
-			continuity << < numBlocks, threadsPerBlock >> >(dt2, cols, dx, dy, d_rr, d_Ev, d_ql, d_h, d_ho, d_um, d_vn, INT, INF, LWL, EV_WL_min, d_inf, N);
+			continuity << < numBlocks, threadsPerBlock >> >(dt2, cols,rows, dx, dy, d_rr, d_Ev, d_ql, d_h, d_ho, d_um, d_vn, INT, INF, LWL, EV_WL_min, d_inf, N);
 			cudaDeviceSynchronize();
 
-
+	
 			// ************************************************
 			//                 ERROR TREATMENT
 			// ************************************************
 			treat_error << < numBlocks, threadsPerBlock >> >(cols, rows, d_th, d_inf, d_um, d_vn, d_h, N);
 			cudaDeviceSynchronize();
+
+
 			// time step **************************************
 			time = time + dt;
 			mstep = mstep + 1;
 			//*************************************************
 			//              CONTINUITY EQUATION
 			//*************************************************
-			stream_flow(cols, rows, xcoor, ycoor, time, dtrain, h_rain, h_qq, h_ql, dtoq, h_brx, h_bry, dx, dy, nst, h_rr);
-
+			
+			stream_flow(cols, rows, (xcoor/resolution), (ycoor/resolution), time, dtrain, h_rain, h_qq, h_ql, dtoq, h_brx, h_bry, dx, dy, nst, h_rr);
 			cudaMemcpy(d_ql, h_ql, N*sizeof(double), cudaMemcpyHostToDevice);
-			cudaMemcpy(d_rr, h_rr, sizeof(double), cudaMemcpyHostToDevice);
+			cudaMemcpy(d_rr, h_rr, sizeof(double), cudaMemcpyHostToDevice);			
 
 			if (evaporation_on == 1){
 				evaporation_load(time, dtrain, h_Evapo, h_Ev);
@@ -1261,158 +1318,183 @@ int main()
 			}
 
 			//system("pause");
-			continuity << < numBlocks, threadsPerBlock >> >(dt2, cols, dx, dy, d_rr, d_Ev, d_ql, d_h, d_ho, d_um, d_vn, INT, INF, LWL, EV_WL_min, d_inf, N);
+						
+			continuity << < numBlocks, threadsPerBlock >> >(dt2, cols,rows, dx, dy, d_rr, d_Ev, d_ql, d_h, d_ho, d_um, d_vn, INT, INF, LWL, EV_WL_min, d_inf, N);
 			cudaDeviceSynchronize();
-
+			
 			//*************************************************
 			//           PREPARING NEXT CALCULATION
-			//*************************************************
+			//*************************************************			
 			hm_hn << < numBlocks, threadsPerBlock >> >(d_hm, d_hn, d_h, N, cols, rows);
-			cudaDeviceSynchronize();
+			cudaDeviceSynchronize();	
+
 			uu1_vv1 << < numBlocks, threadsPerBlock >> >(d_th, d_hm, d_hn, d_uu1, d_um, d_vv1, d_vn, N, cols, rows);
-			cudaDeviceSynchronize();
+			cudaDeviceSynchronize();	
+           
 			uu_vv << < numBlocks, threadsPerBlock >> >(d_th, d_h, d_uu1, d_vv1, d_uu, d_vv, N, cols);
 			cudaDeviceSynchronize();
+			
 			uua_vva << < numBlocks, threadsPerBlock >> >(d_uu1, d_vv1, d_uua, d_vva, N, cols, rows);
-			cudaDeviceSynchronize();
-
+			cudaDeviceSynchronize();			
+			
 			//**************************************************
 			//                   FORWARD
 			//**************************************************
 			forward << < numBlocks, threadsPerBlock >> >(cols, rows, d_umo, d_um, d_vno, d_vn, d_ho, d_h, N);
 			cudaDeviceSynchronize();
 			//**************************************************
-
+			
 			time = time + dt;
 			mstep = mstep + 1;
+			/*
+			if (mstep % (lkout) == 0){
+				//Time
+				duration = (std::clock() - start) / (double)CLOCKS_PER_SEC;
+				std::cout << "printf: " << duration << '\n';
 
+				// Save Times
+				FILE *TimeOutput;
+				//std::string dirTimeOutput = "db\\" + dir_parameters + "\\output\\TimeSimu_" + tempo + ".txt";
+				std::string dirTimeOutput = "db\\" + dir_parameters + "\\output\\TimeSimu_" + "t" + ".txt";
+				TimeOutput = fopen(dirTimeOutput.c_str(), "w");
+				fprintf(TimeOutput, " %lf\n", duration);
+				fclose(TimeOutput);
+			}
+			*/
 			//output
-			if ((mstep % (lkout) == 0) || (out0 == 0)){
-				tq = tq + 1;
+			if ((out_depth == 1) || (out_velocity_x == 1) || (out_velocity_y == 1) || (out_elevation == 1)){
+				if ((mstep % (lkout) == 0) || (out0 == 0)){
+					tq = tq + 1;
 
-				if (out0 > 0){
-					out << round(mstep*dt / dkout);
-					tempo = out.str();
-					out.str("");
-				}
-				else{
-					out << 0;
-					tempo = out.str();
-					out.str("");
-				}
+					if (out0 > 0){
+						out << round(mstep*dt / dkout);
+						tempo = out.str();
+						out.str("");
+
+					}
+					else{
+						out << 0;
+						tempo = out.str();
+						out.str("");
+					}
 
 
-				FILE *Res_Output;
-				dirRes_Output = "db\\" + dir_parameters + "\\output\\Results_" + tempo + ".vtk";
-				Res_Output = fopen(dirRes_Output.c_str(), "w");
+					FILE *Res_Output;
+					dirRes_Output = "db\\" + dir_parameters + "\\output\\Results_" + tempo + ".vtk";
+					Res_Output = fopen(dirRes_Output.c_str(), "w");
 
-				// output .vtk format
+					// output .vtk format
 
-				fprintf(Res_Output, "%s\n", "# vtk DataFile Version 2.0");
-				fprintf(Res_Output, "%s\n", "Brazil");
-				fprintf(Res_Output, "%s\n", "ASCII");
-				fprintf(Res_Output, "%s\n", "DATASET STRUCTURED_POINTS");
-				fprintf(Res_Output, "DIMENSIONS %d %d %d\n", cols, rows, 1);
-				fprintf(Res_Output, "ASPECT_RATIO %lf %lf %lf\n", dx, dy, 1.0000);
-				fprintf(Res_Output, "ORIGIN %lf %lf %lf\n", xcoor, ycoor, 0.000);
-				fprintf(Res_Output, "POINT_DATA %d\n", cols*rows);
-				int posxy;
-				int npout = 0;
-				//                 Water depht
-				if (out_depht == 1){
-					cudaMemcpy(h_h, d_h, N*sizeof(double), cudaMemcpyDeviceToHost);
-					fprintf(Res_Output, "%s\n", "SCALARS depht float 1");
-					fprintf(Res_Output, "%s\n", "LOOKUP_TABLE default");
-					int km = -1;
-					for (int im = 0; im <= rows - 1; im++) {
-						posxy = rows*cols - (im + 1)*cols;
-						for (int jm = 0; jm <= cols - 1; jm++) {
-							km = km + 1;
-							posxy = posxy + 1;
-							if (out_outlet_on == 1){
-								//***********************************************								
-								for (int i = 0; i < n_out; i++){
-									outx = round(abs(xcoor - h_outx[i]));
-									outy = rows - round(abs(ycoor - h_outy[i]));
+					fprintf(Res_Output, "%s\n", "# vtk DataFile Version 2.0");
+					fprintf(Res_Output, "%s\n", "Brazil");
+					fprintf(Res_Output, "%s\n", "ASCII");
+					fprintf(Res_Output, "%s\n", "DATASET STRUCTURED_POINTS");
+					fprintf(Res_Output, "DIMENSIONS %d %d %d\n", cols, rows, 1);
+					fprintf(Res_Output, "ASPECT_RATIO %lf %lf %lf\n", dx, dy, 1.0000);
+					fprintf(Res_Output, "ORIGIN %lf %lf %lf\n", xcoor, ycoor, 0.000);
+					fprintf(Res_Output, "POINT_DATA %d\n", cols*rows);
+					int posxy;
+					int npout = 0;
+					//                 Water depth
+					if (out_depth == 1){
+						cudaMemcpy(h_h, d_h, N*sizeof(double), cudaMemcpyDeviceToHost);
+						fprintf(Res_Output, "%s\n", "SCALARS Depth float 1");
+						fprintf(Res_Output, "%s\n", "LOOKUP_TABLE default");
+						int km = -1;
+						for (int im = 0; im < rows; im++) {
+							posxy = rows*cols - (im + 1)*cols;
+							posxy = posxy - 1;
+							for (int jm = 0; jm < cols; jm++) {
+								km = km + 1;
+								posxy = posxy + 1;
+								if (out_outlet_on == 1){
+									//***********************************************								
+									for (int i = 0; i < n_out; i++){
+										outx = round(abs((xcoor / resolution) - h_outx[i]));
+										outy = rows - round(abs((ycoor / resolution) - h_outy[i]));
 
-									if (km == ((outy)*cols - (cols - (outx + 1)))){
-										npout = npout + 1;
-										if (out0 == 0){
-											if (npout == n_out){
-												fprintf(WL_Output, " %lf\n", h_initial_condition[km]);
+										if (km == ((outy)*cols - (cols - (outx + 1)))){
+											npout = npout + 1;
+											if (out0 == 0){
+												if (npout == n_out){
+													fprintf(WL_Output, " %lf\n", h_initial_condition[km]);
+												}
+												else{
+													fprintf(WL_Output, " %lf", h_initial_condition[km]);
+												}
 											}
 											else{
-												fprintf(WL_Output, " %lf", h_initial_condition[km]);
-											}
-										}
-										else{
-											if (npout == n_out){
-												fprintf(WL_Output, " %lf\n", h_h[km]);
-											}
-											else{
-												fprintf(WL_Output, " %lf", h_h[km]);
+												if (npout == n_out){
+													fprintf(WL_Output, " %lf\n", h_h[km]);
+												}
+												else{
+													fprintf(WL_Output, " %lf", h_h[km]);
+												}
 											}
 										}
 									}
+									//***********************************************
 								}
-								//***********************************************
-							}
 
-							if (out0 == 0){
-								fprintf(Res_Output, "%f\n", h_initial_condition[posxy]);
+								if (out0 == 0){
+									fprintf(Res_Output, "%f\n", h_initial_condition[posxy]);
+								}
+								else{
+									fprintf(Res_Output, "%f\n", h_h[posxy]);
+								}
 							}
-							else{
-								fprintf(Res_Output, "%f\n", h_h[posxy]);
+						}
+					}
+					//                Velocity x direction
+					if (out_velocity_x == 1){
+						cudaMemcpy(h_vv, d_vv, N*sizeof(double), cudaMemcpyDeviceToHost);
+						fprintf(Res_Output, "%s\n", "SCALARS x_velocity float 1");
+						fprintf(Res_Output, "%s\n", "LOOKUP_TABLE default");
+						km = -1;
+						for (int im = 0; im < rows; im++) {
+							posxy = rows*cols - (im + 1)*cols;
+							posxy = posxy - 1;
+							for (int jm = 0; jm < cols; jm++) {
+								km = km + 1;
+								posxy = posxy + 1;
+								fprintf(Res_Output, "%f\n", h_vv[posxy]);
 							}
 						}
 					}
-				}
-				//                Velocity x direction
-				if (out_velocity_x == 1){
-					cudaMemcpy(h_um, d_um, N*sizeof(double), cudaMemcpyDeviceToHost);
-					fprintf(Res_Output, "%s\n", "SCALARS x_velocity float 1");
-					fprintf(Res_Output, "%s\n", "LOOKUP_TABLE default");
-					km = -1;
-					for (int im = 0; im <= rows - 1; im++) {
-						posxy = rows*cols - (im + 1)*cols;
-						for (int jm = 0; jm <= cols - 1; jm++) {
-							km = km + 1;
-							posxy = posxy + 1;
-							fprintf(Res_Output, "%f\n", h_um[posxy]);
+					//                Velocity y direction
+					if (out_velocity_y == 1){
+						cudaMemcpy(h_uu, d_uu, N*sizeof(double), cudaMemcpyDeviceToHost);
+						fprintf(Res_Output, "%s\n", "SCALARS y_velocity float 1");
+						fprintf(Res_Output, "%s\n", "LOOKUP_TABLE default");
+						km = -1;
+						for (int im = 0; im < rows; im++) {
+							posxy = rows*cols - (im + 1)*cols;
+							posxy = posxy - 1;
+							for (int jm = 0; jm < cols; jm++) {
+								km = km + 1;
+								posxy = posxy + 1;
+								fprintf(Res_Output, "%f\n", -h_uu[posxy]);
+							}
 						}
 					}
-				}
-				//                Velocity y direction
-				if (out_velocity_y == 1){
-					cudaMemcpy(h_vn, d_vn, N*sizeof(double), cudaMemcpyDeviceToHost);
-					fprintf(Res_Output, "%s\n", "SCALARS y_velocity float 1");
-					fprintf(Res_Output, "%s\n", "LOOKUP_TABLE default");
-					km = -1;
-					for (int im = 0; im <= rows - 1; im++) {
-						posxy = rows*cols - (im + 1)*cols;
-						for (int jm = 0; jm <= cols - 1; jm++) {
-							km = km + 1;
-							posxy = posxy + 1;
-							fprintf(Res_Output, "%f\n", h_vn[posxy]);
+					//                 Elevations
+					if (out_elevation == 1){
+						cudaMemcpy(h_baseo, d_baseo, N*sizeof(double), cudaMemcpyDeviceToHost);
+						fprintf(Res_Output, "%s\n", "SCALARS Elevations float 1");
+						fprintf(Res_Output, "%s\n", "LOOKUP_TABLE default");
+						km = -1;
+						for (int im = 0; im < rows; im++) {
+							posxy = rows*cols - (im + 1)*cols;
+							posxy = posxy - 1;
+							for (int jm = 0; jm < cols; jm++) {
+								km = km + 1;
+								posxy = posxy + 1;
+								fprintf(Res_Output, "%f\n", h_baseo[posxy]);
+							}
 						}
 					}
+					fclose(Res_Output);
 				}
-				//                 Elevations
-				if (out_elevation == 1){
-					cudaMemcpy(h_baseo, d_baseo, N*sizeof(double), cudaMemcpyDeviceToHost);
-					fprintf(Res_Output, "%s\n", "SCALARS elevations float 1");
-					fprintf(Res_Output, "%s\n", "LOOKUP_TABLE default");
-					km = -1;
-					for (int im = 0; im <= rows - 1; im++) {
-						posxy = rows*cols - (im + 1)*cols;
-						for (int jm = 0; jm <= cols - 1; jm++) {
-							km = km + 1;
-							posxy = posxy + 1;
-							fprintf(Res_Output, "%f\n", h_baseo[posxy]);
-						}
-					}
-				}
-				fclose(Res_Output);
 			}
 		}
 
@@ -1429,14 +1511,15 @@ int main()
 		fclose(WL_Output);
 
 		// Cleaning Up (GPU memory)
-
-		cudaFree(d_Ev);
-		cudaFree(d_T);
-		cudaFree(d_Rg);
-		cudaFree(d_Rs);
-		cudaFree(d_pw);
-		cudaFree(d_lv);
-		cudaFree(d_Evapo);
+		if (evaporation_on == 1){
+			cudaFree(d_Ev);
+			cudaFree(d_T);
+			cudaFree(d_Rg);
+			cudaFree(d_Rs);
+			cudaFree(d_pw);
+			cudaFree(d_lv);
+			cudaFree(d_Evapo);
+		}
 		cudaFree(d_inf);
 		cudaFree(d_infx);
 		cudaFree(d_infy);
@@ -1456,8 +1539,8 @@ int main()
 		cudaFree(d_vv1);
 		cudaFree(d_baseo);
 		cudaFree(d_ql);
-		cudaFree(d_rr);
-		cudaFree(d_th);
+		//cudaFree(d_rr);
+		//cudaFree(d_th);
 
 	}
 

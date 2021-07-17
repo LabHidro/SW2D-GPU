@@ -1,9 +1,31 @@
-﻿Build started 02/03/2021 17:02:03.
-     1>Project "C:\Users\Usuário\Desktop\SW2D-GPU\SW2D-GPU\SW2D-GPU.vcxproj" on node 2 (Build target(s)).
+﻿Build started 17/07/2021 13:18:40.
+     1>Project "C:\Users\Usuário\Desktop\SW2D-GPU-main\SW2D-GPU_win\SW2D-GPU\SW2D-GPU.vcxproj" on node 2 (Build target(s)).
+     1>AddCudaCompileDeps:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\cl.exe /E /nologo /showIncludes /TP /D__CUDACC__ /DWIN32 /DWIN64 /DNDEBUG /D_CONSOLE /D_MBCS /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1\include" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1\bin" /I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1\include" /I. /FIcuda_runtime.h /c C:\Users\Usuário\Desktop\SW2D-GPU-main\SW2D-GPU_win\SW2D-GPU\SW2D-GPU.cu 
+     1>Project "C:\Users\Usuário\Desktop\SW2D-GPU-main\SW2D-GPU_win\SW2D-GPU\SW2D-GPU.vcxproj" (1) is building "C:\Users\Usuário\Desktop\SW2D-GPU-main\SW2D-GPU_win\SW2D-GPU\SW2D-GPU.vcxproj" (1:2) on node 2 (CudaBuildCore target(s)).
+     1>CudaBuildCore:
+         Compiling CUDA source file SW2D-GPU.cu...
+         cmd.exe /C "C:\Users\Usuário\AppData\Local\Temp\tmp1a28b0d2eebf4fb6b344eab2d68d7786.cmd"
+         "C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1\bin\nvcc.exe" -gencode=arch=compute_35,code=\"sm_35,compute_35\" --use-local-env -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64" -x cu  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DWIN32 -DWIN64 -DNDEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /O2 /Fdx64\Release\vc120.pdb /FS /Zi  /MD " -o x64\Release\SW2D-GPU.cu.obj "C:\Users\Usuário\Desktop\SW2D-GPU-main\SW2D-GPU_win\SW2D-GPU\SW2D-GPU.cu"
+         
+         C:\Users\Usuário\Desktop\SW2D-GPU-main\SW2D-GPU_win\SW2D-GPU>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1\bin\nvcc.exe" -gencode=arch=compute_35,code=\"sm_35,compute_35\" --use-local-env -ccbin "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64" -x cu  -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1\include"     --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static     -DWIN32 -DWIN64 -DNDEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /O2 /Fdx64\Release\vc120.pdb /FS /Zi  /MD " -o x64\Release\SW2D-GPU.cu.obj "C:\Users\Usuário\Desktop\SW2D-GPU-main\SW2D-GPU_win\SW2D-GPU\SW2D-GPU.cu" 
+     1>CUDACOMPILE : nvcc warning : nvcc support for Microsoft Visual Studio 2013 and earlier has been deprecated and is no longer being maintained
+         SW2D-GPU.cu
+         support for this version of Microsoft Visual Studio has been deprecated! Only the versions between 2015 and 2019 (inclusive) are supported!
+     1>C:/Users/Usuário/Desktop/SW2D-GPU-main/SW2D-GPU_win/SW2D-GPU/SW2D-GPU.cu(552): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>C:/Users/Usuário/Desktop/SW2D-GPU-main/SW2D-GPU_win/SW2D-GPU/SW2D-GPU.cu(553): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>C:/Users/Usuário/Desktop/SW2D-GPU-main/SW2D-GPU_win/SW2D-GPU/SW2D-GPU.cu(1029): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>C:/Users/Usuário/Desktop/SW2D-GPU-main/SW2D-GPU_win/SW2D-GPU/SW2D-GPU.cu(1030): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>C:/Users/Usuário/Desktop/SW2D-GPU-main/SW2D-GPU_win/SW2D-GPU/SW2D-GPU.cu(1413): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>C:/Users/Usuário/Desktop/SW2D-GPU-main/SW2D-GPU_win/SW2D-GPU/SW2D-GPU.cu(1414): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>Done Building Project "C:\Users\Usuário\Desktop\SW2D-GPU-main\SW2D-GPU_win\SW2D-GPU\SW2D-GPU.vcxproj" (CudaBuildCore target(s)).
      1>Link:
-         SW2D-GPU.vcxproj -> C:\Users\Usuário\Desktop\SW2D-GPU\x64\Release\SW2D-GPU.exe
-     1>Done Building Project "C:\Users\Usuário\Desktop\SW2D-GPU\SW2D-GPU\SW2D-GPU.vcxproj" (Build target(s)).
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Usuário\Desktop\SW2D-GPU-main\SW2D-GPU_win\x64\Release\SW2D-GPU.exe" /NOLOGO /LIBPATH:"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1\lib\x64" cudart_static.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Usuário\Desktop\SW2D-GPU-main\SW2D-GPU_win\x64\Release\SW2D-GPU.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Usuário\Desktop\SW2D-GPU-main\SW2D-GPU_win\x64\Release\SW2D-GPU.lib" /MACHINE:X64 "x64\Release\SW2D-GPU.cu.obj"
+            Creating library C:\Users\Usuário\Desktop\SW2D-GPU-main\SW2D-GPU_win\x64\Release\SW2D-GPU.lib and object C:\Users\Usuário\Desktop\SW2D-GPU-main\SW2D-GPU_win\x64\Release\SW2D-GPU.exp
+         LINK : /LTCG specified but no code generation required; remove /LTCG from the link command line to improve linker performance
+         SW2D-GPU.vcxproj -> C:\Users\Usuário\Desktop\SW2D-GPU-main\SW2D-GPU_win\x64\Release\SW2D-GPU.exe
+     1>Done Building Project "C:\Users\Usuário\Desktop\SW2D-GPU-main\SW2D-GPU_win\SW2D-GPU\SW2D-GPU.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.06
+Time Elapsed 00:00:09.12
