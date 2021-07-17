@@ -19,7 +19,7 @@ damages or other liability arising from the use any part of related code.
 
 Water flow simulation in the Peri Lake Watershed:
 
-![](Peri_Lake_watershed.gif) 
+![](Peri_Lake_Experimental_Catchment.gif) 
 
 Dam break simulation:
 
