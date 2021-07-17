@@ -15,6 +15,7 @@ Global
 		{AD393B8B-EE34-4C0A-80DD-F02D74E19566}.Debug|x64.Build.0 = Debug|x64
 		{AD393B8B-EE34-4C0A-80DD-F02D74E19566}.Release|x64.ActiveCfg = Release|x64
 		{AD393B8B-EE34-4C0A-80DD-F02D74E19566}.Release|x64.Build.0 = Release|x64
+		{AD393B8B-EE34-4C0A-80DD-F02D74E19566}.Release|x64.Deploy.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
