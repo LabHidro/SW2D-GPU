@@ -1,5 +1,5 @@
 tday0_thour0_tmin0_tsec0: 0 0 0 0
-tday_thour_tmin_tsec: 0 0 0 0
+tday_thour_tmin_tsec: 0 10 0 0
 dt: 0.04     
 dpout: 3600     
 dkout: 3600       
@@ -13,5 +13,5 @@ manning_coef: 0.12
 out_velocity_x: 1
 out_velocity_y: 1
 out_elevation: 1
-out_depht: 1
+out_depth: 1
 out_outlet_on: 1
