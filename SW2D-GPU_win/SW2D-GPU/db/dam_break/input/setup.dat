@@ -13,5 +13,5 @@ manning_coef: 0.012
 out_velocity_x: 1
 out_velocity_y: 1
 out_elevation: 1
-out_depht: 1
+out_depth: 1
 out_outlet_on: 0
