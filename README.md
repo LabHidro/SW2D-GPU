@@ -1,7 +1,5 @@
 # SW2D-GPU 
 Two-dimensional shallow water model accelerated by GPGPU
-
-Authors: Tomas Carlotto, Pedro Luiz Borges Chaffe, Camyla Innocente dos Santos, Seungsoo Lee.
 https://www.sciencedirect.com/science/article/abs/pii/S1364815221002474
 
 Developer of parallel code in GPGPU: Tomas Carlotto          | Code written in CUDA C/C++
